@@ -9,4 +9,6 @@ require (
 	github.com/spf13/viper v1.8.1
 	github.com/sw33tLie/bbscope v0.0.0-20210629130950-743b51de5783
 	github.com/tidwall/gjson v1.8.1
+	github.com/tidwall/pretty v1.2.0 // indirect
+	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 )
