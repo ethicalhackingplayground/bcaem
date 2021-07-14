@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/ethicalhackingplayground/bcaem/scope"
+	"github.com/ethicalhackingplayground/bcaem/internal/scope"
 	"github.com/tidwall/gjson"
 )
 
