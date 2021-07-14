@@ -216,6 +216,7 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 					if currentTarget.line == "Adobe Experience Manager" {
 						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 					}
+					/**
 					if currentTarget.line == "Website Testing" {
 
 						req, err := http.NewRequest("GET", currentTarget.line, nil)
@@ -238,7 +239,7 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 							pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 						}
 
-					}
+					}**/
 				}
 			}
 		}
