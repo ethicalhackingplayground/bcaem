@@ -234,7 +234,14 @@ func GetProgramScope(handle string, categories string, token string) (pData scop
 
 func GetCategories(input string) []string {
 	categories := map[string][]string{
-		"url": {"Website Testing"},
+		"url":      {"Website Testing"},
+		"api":      {"API Testing"},
+		"mobile":   {"Android", "iOS"},
+		"android":  {"Android"},
+		"apple":    {"iOS"},
+		"other":    {"Other"},
+		"hardware": {"Hardware Testing"},
+		"all":      {},
 	}
 
 	selectedCategory, ok := categories[strings.ToLower(input)]
