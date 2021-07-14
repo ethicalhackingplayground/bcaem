@@ -216,7 +216,7 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 					if currentTarget.line == "Adobe Experience Manager" {
 						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 					}
-					if currentTarget.line == "Website Testing" && strings.HasPrefix(currentTarget.line, "https") || strings.HasPrefix(currentTarget.line, "http") {
+					if currentTarget.line == "Website Testing" {
 
 						req, err := http.NewRequest("GET", currentTarget.line, nil)
 						if err != nil {
