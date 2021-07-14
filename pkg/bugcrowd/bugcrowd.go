@@ -218,8 +218,14 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 					}
 					if y.Map()["name"].Str == "Website Testing" && strings.HasPrefix(currentTarget.line, "https") || strings.HasPrefix(currentTarget.line, "http") {
 
-						req, _ := http.NewRequest("GET", currentTarget.line, nil)
-						res, _ := client.Do(req)
+						req, err := http.NewRequest("GET", currentTarget.line, nil)
+						if err != nil {
+							return
+						}
+						res, err := client.Do(req)
+						if err != nil {
+							return
+						}
 
 						rbody, _ := ioutil.ReadAll(res.Body)
 						if (strings.Contains(string(rbody), "/content/dam/")) ||
