@@ -14,7 +14,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "bbscope",
+	Use:   "bcaem",
 	Short: "Grab AEM Programs from Bugcrowd",
 	Long:  `The ultimate aem scope gathering tool for Bugcrowd`,
 	// Uncomment the following line if your bare application
