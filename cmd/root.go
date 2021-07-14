@@ -15,8 +15,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "bbscope",
-	Short: "Grab scope from HackerOne, Bugcrowd and Intigriti",
-	Long:  `The ultimate scope gathering tool for HackerOne, Bugcrowd and Intigriti by sw33tLie`,
+	Short: "Grab AEM Programs from Bugcrowd",
+	Long:  `The ultimate aem scope gathering tool for Bugcrowd`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) {},
@@ -33,15 +33,14 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.bbscope.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.bcaem.yaml)")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	// Global flags
 	rootCmd.PersistentFlags().StringP("proxy", "", "", "HTTP Proxy (Useful for debugging. Example: http://127.0.0.1:8080)")
-	rootCmd.PersistentFlags().StringP("output", "o", "t", "Output flags. Supported: t (target), d (target description), c (category), u (program URL). Can be combined. Example: -o tdu")
 	rootCmd.PersistentFlags().StringP("delimiter", "d", " ", "Delimiter character used when printing multiple data using the output flag")
-	rootCmd.PersistentFlags().BoolP("bbpOnly", "b", false, "Only fetch programs offering monetary rewards")
-	rootCmd.PersistentFlags().BoolP("pvtOnly", "p", false, "Only fetch data from private programs")
+	rootCmd.PersistentFlags().BoolP("bbpOnly", "b", false, "Only fetch aem programs offering monetary rewards")
+	rootCmd.PersistentFlags().BoolP("pvtOnly", "p", false, "Only fetch aem programs from private programs")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -59,13 +58,8 @@ func initConfig() {
 
 		// Search config in home directory with name ".bbscope" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".bbscope")
+		viper.SetConfigName(".mcaem")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		//fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }

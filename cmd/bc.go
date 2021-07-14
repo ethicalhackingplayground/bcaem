@@ -15,13 +15,12 @@ import (
 var bcCmd = &cobra.Command{
 	Use:   "bc",
 	Short: "Bugcrowd",
-	Long:  "Gathers data from Bugcrowd (https://bugcrowd.com/)",
+	Long:  "Gathers AEM data from Bugcrowd (https://bugcrowd.com/)",
 	Run: func(cmd *cobra.Command, args []string) {
 		token, _ := cmd.Flags().GetString("token")
 		categories, _ := cmd.Flags().GetString("categories")
 		concurrency, _ := cmd.Flags().GetInt("concurrency")
 
-		outputFlags, _ := rootCmd.PersistentFlags().GetString("output")
 		delimiterCharacter, _ := rootCmd.PersistentFlags().GetString("delimiter")
 		proxy, _ := rootCmd.PersistentFlags().GetString("proxy")
 		bbpOnly, _ := rootCmd.Flags().GetBool("bbpOnly")
@@ -43,7 +42,7 @@ var bcCmd = &cobra.Command{
 			token = bugcrowd.Login(email, password)
 		}
 
-		bugcrowd.PrintAllScope(token, bbpOnly, pvtOnly, categories, outputFlags, delimiterCharacter, concurrency)
+		bugcrowd.PrintAllScope(token, bbpOnly, pvtOnly, categories, delimiterCharacter, concurrency)
 	},
 }
 

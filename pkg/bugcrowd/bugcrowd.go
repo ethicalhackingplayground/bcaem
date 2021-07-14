@@ -12,9 +12,18 @@ import (
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/ethicalhackingplayground/bcaem/internal/scope"
 	"github.com/tidwall/gjson"
 )
+
+type ScopeElement struct {
+	Target string
+}
+
+type ProgramData struct {
+	Url        string
+	InScope    []ScopeElement
+	OutOfScope []ScopeElement
+}
 
 const (
 	USER_AGENT          = "Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0"
@@ -157,7 +166,7 @@ func GetProgramHandles(sessionToken string, bbpOnly bool, pvtOnly bool) []string
 	return paths
 }
 
-func GetProgramScope(handle string, categories string, token string) (pData scope.ProgramData) {
+func GetProgramScope(handle string, categories string, token string) (pData ProgramData) {
 	pData.Url = "https://bugcrowd.com" + handle
 
 	req, err := http.NewRequest("GET", pData.Url, nil)
@@ -194,9 +203,22 @@ func GetProgramScope(handle string, categories string, token string) (pData scop
 			var currentTarget struct {
 				line       string
 				categories []string
+				target     string
+				tags       []string
+				name       string
 			}
-			currentTarget.line = scopeElement.Map()["name"].Str
+			for _, x := range scopeElement.Map()["target"].Map() {
+				for _, y := range x.Array() {
+					currentTarget.tags = append(currentTarget.tags, y.Map()["name"].Str)
+					if y.Map()["name"].Str == "Adobe Experience Manager" {
+						currentTarget.line = scopeElement.Map()["name"].Str
+						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
+					}
+				}
+			}
+			//currentTarget.target = scopeElement.Map()["target"].Str
 
+			/**
 			for _, x := range scopeElement.Map()["target"].Map() {
 				for _, y := range x.Array() {
 					currentTarget.categories = append(currentTarget.categories, y.Map()["name"].Str)
@@ -221,12 +243,13 @@ func GetProgramScope(handle string, categories string, token string) (pData scop
 			} else {
 				pData.InScope = append(pData.InScope, scope.ScopeElement{Target: currentTarget.line, Description: "", Category: strings.Join(currentTarget.categories, " ")})
 			}
+			**/
 
 		}
 	})
 
 	if len(pData.InScope) == 0 {
-		pData.InScope = append(pData.InScope, scope.ScopeElement{Target: "NO_IN_SCOPE_TABLE", Description: "", Category: ""})
+		return
 	}
 
 	return pData
@@ -251,7 +274,7 @@ func GetCategories(input string) []string {
 	return selectedCategory
 }
 
-func GetAllProgramsScope(token string, bbpOnly bool, pvtOnly bool, categories string, concurrency int) (programs []scope.ProgramData) {
+func GetAllProgramsScope(token string, bbpOnly bool, pvtOnly bool, categories string, concurrency int) (programs []ProgramData) {
 	programHandles := GetProgramHandles(token, bbpOnly, pvtOnly)
 
 	handles := make(chan string, concurrency)
@@ -283,10 +306,12 @@ func GetAllProgramsScope(token string, bbpOnly bool, pvtOnly bool, categories st
 }
 
 // PrintAllScope prints to stdout all scope elements of all targets
-func PrintAllScope(token string, bbpOnly bool, pvtOnly bool, categories string, outputFlags string, delimiter string, concurrency int) {
+func PrintAllScope(token string, bbpOnly bool, pvtOnly bool, categories string, delimiter string, concurrency int) {
 	programs := GetAllProgramsScope(token, bbpOnly, pvtOnly, categories, concurrency)
 	for _, pData := range programs {
-		scope.PrintProgramScope(pData, outputFlags, delimiter)
+		for _, scopeElement := range pData.InScope {
+			fmt.Println(scopeElement.Target)
+		}
 	}
 }
 
