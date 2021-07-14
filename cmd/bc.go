@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/ethicalhackingplayground/bcaem/pkg/bugcrowd"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/sw33tLie/bbscope/pkg/bugcrowd"
 )
 
 // bcCmd represents the bc command
