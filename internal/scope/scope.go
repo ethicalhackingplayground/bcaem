@@ -2,13 +2,14 @@ package scope
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
 type ScopeElement struct {
 	Target      string
-	Category    string
 	Description string
+	Category    string
 }
 
 type ProgramData struct {
@@ -17,11 +18,24 @@ type ProgramData struct {
 	OutOfScope []ScopeElement
 }
 
-func PrintProgramScope(programScope ProgramData, delimiter string) {
+func PrintProgramScope(programScope ProgramData, outputFlags string, delimiter string) {
 	lines := ""
 	for _, scopeElement := range programScope.InScope {
 		var line string
-		line += scopeElement.Target + delimiter
+		for _, f := range outputFlags {
+			switch f {
+			case 't':
+				line += scopeElement.Target + delimiter
+			case 'd':
+				line += scopeElement.Description + delimiter
+			case 'c':
+				line += scopeElement.Category + delimiter
+			case 'u':
+				line += programScope.Url + delimiter
+			default:
+				log.Fatal("Invalid print flag")
+			}
+		}
 		line = strings.TrimSuffix(line, delimiter)
 		if len(line) > 0 {
 			lines += line + "\n"

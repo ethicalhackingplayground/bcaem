@@ -6,21 +6,22 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/ethicalhackingplayground/bcaem/pkg/bugcrowd"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/sw33tLie/bbscope/pkg/bugcrowd"
 )
 
 // bcCmd represents the bc command
 var bcCmd = &cobra.Command{
 	Use:   "bc",
 	Short: "Bugcrowd",
-	Long:  "Gathers aem programs from Bugcrowd (https://bugcrowd.com/)",
+	Long:  "Gathers data from Bugcrowd (https://bugcrowd.com/)",
 	Run: func(cmd *cobra.Command, args []string) {
 		token, _ := cmd.Flags().GetString("token")
 		categories, _ := cmd.Flags().GetString("categories")
 		concurrency, _ := cmd.Flags().GetInt("concurrency")
 
+		outputFlags, _ := rootCmd.PersistentFlags().GetString("output")
 		delimiterCharacter, _ := rootCmd.PersistentFlags().GetString("delimiter")
 		proxy, _ := rootCmd.PersistentFlags().GetString("proxy")
 		bbpOnly, _ := rootCmd.Flags().GetBool("bbpOnly")
@@ -42,13 +43,14 @@ var bcCmd = &cobra.Command{
 			token = bugcrowd.Login(email, password)
 		}
 
-		bugcrowd.PrintAllScope(token, bbpOnly, pvtOnly, categories, delimiterCharacter, concurrency)
+		bugcrowd.PrintAllScope(token, bbpOnly, pvtOnly, categories, outputFlags, delimiterCharacter, concurrency)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(bcCmd)
 	bcCmd.Flags().StringP("token", "t", "", "Bugcrowd session token (_crowdcontrol_session cookie)")
+	bcCmd.Flags().StringP("categories", "c", "all", "Scope categories, comma separated (Available: all, url, api, mobile, android, apple, other, hardware)")
 	bcCmd.Flags().IntP("concurrency", "", 2, "Concurrency")
 
 	bcCmd.Flags().StringP("email", "E", "", "Login email")
