@@ -25,8 +25,6 @@ type ProgramData struct {
 	OutOfScope []ScopeElement
 }
 
-var client = &http.Client{}
-
 const (
 	USER_AGENT          = "Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0"
 	BUGCROWD_LOGIN_PAGE = "https://bugcrowd.com/user/sign_in"
@@ -216,23 +214,20 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 					if y.Map()["name"].Str == "Adobe Experience Manager" {
 						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 					}
-					if y.Map()["name"].Str == "Website Testing" &&
-						strings.HasPrefix(y.Map()["name"].Str, "http") ||
-						strings.HasSuffix(y.Map()["name"].Str, "https") {
+					if y.Map()["name"].Str == "Website Testing" {
 
-						req, err := http.NewRequest("GET", y.Map()["name"].Str, nil)
+						req1, err := http.NewRequest("GET", y.Map()["name"].Str, nil)
 						if err != nil {
 							return
 						}
-						res, err := client.Do(req)
+						resp1, err := client.Do(req1)
 						if err != nil {
 							return
 						}
+						defer resp1.Body.Close()
 
-						rbody, err := ioutil.ReadAll(res.Body)
-						if err != nil {
-							return
-						}
+						rbody, _ := ioutil.ReadAll(resp1.Body)
+
 						if (strings.Contains(string(rbody), "/content/dam/")) ||
 							(strings.Contains(string(rbody), "/libs/settings/")) ||
 							(strings.Contains(string(rbody), "/libs/granite/")) ||
