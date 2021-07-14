@@ -213,10 +213,10 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 				for _, y := range x.Array() {
 					currentTarget.tags = append(currentTarget.tags, y.Map()["name"].Str)
 					currentTarget.line = scopeElement.Map()["name"].Str
-					if y.Map()["name"].Str == "Adobe Experience Manager" {
+					if currentTarget.line == "Adobe Experience Manager" {
 						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 					}
-					if y.Map()["name"].Str == "Website Testing" && strings.HasPrefix(currentTarget.line, "https") || strings.HasPrefix(currentTarget.line, "http") {
+					if currentTarget.line == "Website Testing" && strings.HasPrefix(currentTarget.line, "https") || strings.HasPrefix(currentTarget.line, "http") {
 
 						req, err := http.NewRequest("GET", currentTarget.line, nil)
 						if err != nil {
@@ -227,7 +227,10 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 							return
 						}
 
-						rbody, _ := ioutil.ReadAll(res.Body)
+						rbody, err := ioutil.ReadAll(res.Body)
+						if err != nil {
+							return
+						}
 						if (strings.Contains(string(rbody), "/content/dam/")) ||
 							(strings.Contains(string(rbody), "/libs/settings/")) ||
 							(strings.Contains(string(rbody), "/libs/granite/")) ||
