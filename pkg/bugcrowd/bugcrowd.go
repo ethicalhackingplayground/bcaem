@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/ethicalhackingplayground/bcaem/internal/scope"
+	"github.com/ethicalhackingplayground/bcaem/scope"
 	"github.com/tidwall/gjson"
 )
 
@@ -283,10 +283,10 @@ func GetAllProgramsScope(token string, bbpOnly bool, pvtOnly bool, categories st
 }
 
 // PrintAllScope prints to stdout all scope elements of all targets
-func PrintAllScope(token string, bbpOnly bool, pvtOnly bool, categories string, delimiter string, concurrency int) {
+func PrintAllScope(token string, bbpOnly bool, pvtOnly bool, categories string, outputFlags string, delimiter string, concurrency int) {
 	programs := GetAllProgramsScope(token, bbpOnly, pvtOnly, categories, concurrency)
 	for _, pData := range programs {
-		scope.PrintProgramScope(pData, delimiter)
+		scope.PrintProgramScope(pData, outputFlags, delimiter)
 	}
 }
 
