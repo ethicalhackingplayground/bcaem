@@ -234,7 +234,7 @@ func GetProgramScope(handle string, categories string, token string) (pData scop
 
 func GetCategories(input string) []string {
 	categories := map[string][]string{
-		"url": {"Adobe Experience Manager", "Website Testing"},
+		"url": {"Website Testing"},
 	}
 
 	selectedCategory, ok := categories[strings.ToLower(input)]
