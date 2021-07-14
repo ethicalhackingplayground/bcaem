@@ -218,7 +218,7 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 					}
 					if y.Map()["name"].Str == "Website Testing" &&
 						strings.HasPrefix(y.Map()["name"].Str, "http") ||
-						strings.HasSuffix(y.Map()["name"].Str, "http") {
+						strings.HasSuffix(y.Map()["name"].Str, "https") {
 
 						req, err := http.NewRequest("GET", y.Map()["name"].Str, nil)
 						if err != nil {
