@@ -214,6 +214,16 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 						currentTarget.line = scopeElement.Map()["name"].Str
 						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 					}
+					if y.Map()["name"].Str == "Website Testing" {
+						currentTarget.line = scopeElement.Map()["name"].Str
+						if (strings.Contains(doc.Contents().Text(), "/content/dam/")) ||
+							(strings.Contains(doc.Contents().Text(), "/libs/settings/")) ||
+							(strings.Contains(doc.Contents().Text(), "/libs/granite/")) ||
+							(strings.Contains(doc.Contents().Text(), "/etc/libs/")) {
+							pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
+						}
+
+					}
 				}
 			}
 		}

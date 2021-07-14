@@ -65,7 +65,7 @@ www.something.com
 
 ### License
 
-Erebus is distributed under [GPL-3.0 License](https://github.com/ethicalhackingplayground/erebus/blob/main/LICENSE)
+bcaem is distributed under [Apache-2.0 License](https://github.com/ethicalhackingplayground/bcaem/blob/main/LICENSE)
 
 <h1 align="left">
   <a href="https://discord.gg/MQWCem5b"><img src="static/Join-Discord.png" width="380" alt="Join Discord"></a>
