@@ -3,7 +3,7 @@
 <img src="static/bcaem.png" width="200px" alt="bcaem">
 </h1>
 
-<h4 align="center">Fast AEM scope gathering tool for all your public and private BugCrowd Programs</h4>
+<h4 align="center">Fast AEM scope gathering tool for all your public and private Bugcrowd Programs</h4>
 
 
 <p align="center">
