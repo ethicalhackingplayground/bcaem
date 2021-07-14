@@ -184,7 +184,7 @@ func GetProgramScope(handle string, categories string, token string) (pData scop
 		log.Fatal(err)
 	}
 
-	doc.Find(".ResearcherTargetGroups").Each(func(index int, s *goquery.Selection) {
+	doc.Find(".react-component-researcher-target-groups").Each(func(index int, s *goquery.Selection) {
 		json, ok := s.Attr("data-react-props")
 		if !ok {
 			log.Fatal("Error parsing HTML of ", pData.Url)
