@@ -2,23 +2,25 @@ package scope
 
 import (
 	"fmt"
-	"log"
 	"strings"
 )
 
 type ScopeElement struct {
-	Target string
+	Target      string
+	Category    string
+	Description string
 }
 
 type ProgramData struct {
-	Url string
+	Url     string
+	InScope []ScopeElement
 }
 
-func PrintProgramScope(programScope ProgramData, outputFlags string, delimiter string) {
+func PrintProgramScope(programScope ProgramData, delimiter string) {
 	lines := ""
 	for _, scopeElement := range programScope.InScope {
 		var line string
-		line += programScope.Url + delimiter
+		line += scopeElement.Category + delimiter
 		line = strings.TrimSuffix(line, delimiter)
 		if len(line) > 0 {
 			lines += line + "\n"

@@ -42,7 +42,7 @@ var bcCmd = &cobra.Command{
 			token = bugcrowd.Login(email, password)
 		}
 
-		bugcrowd.PrintAllScope(token, bbpOnly, pvtOnly, categories, outputFlags, delimiterCharacter, concurrency)
+		bugcrowd.PrintAllScope(token, bbpOnly, pvtOnly, categories, delimiterCharacter, concurrency)
 	},
 }
 
