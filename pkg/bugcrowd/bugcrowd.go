@@ -25,6 +25,8 @@ type ProgramData struct {
 	OutOfScope []ScopeElement
 }
 
+var client = &http.Client{}
+
 const (
 	USER_AGENT          = "Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0"
 	BUGCROWD_LOGIN_PAGE = "https://bugcrowd.com/user/sign_in"
@@ -210,16 +212,20 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 			for _, x := range scopeElement.Map()["target"].Map() {
 				for _, y := range x.Array() {
 					currentTarget.tags = append(currentTarget.tags, y.Map()["name"].Str)
+					currentTarget.line = scopeElement.Map()["name"].Str
 					if y.Map()["name"].Str == "Adobe Experience Manager" {
-						currentTarget.line = scopeElement.Map()["name"].Str
 						pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 					}
-					if y.Map()["name"].Str == "Website Testing" {
-						currentTarget.line = scopeElement.Map()["name"].Str
-						if (strings.Contains(doc.Contents().Text(), "/content/dam/")) ||
-							(strings.Contains(doc.Contents().Text(), "/libs/settings/")) ||
-							(strings.Contains(doc.Contents().Text(), "/libs/granite/")) ||
-							(strings.Contains(doc.Contents().Text(), "/etc/libs/")) {
+					if y.Map()["name"].Str == "Website Testing" && strings.HasPrefix(currentTarget.line, "https") || strings.HasPrefix(currentTarget.line, "http") {
+
+						req, _ := http.NewRequest("GET", currentTarget.line, nil)
+						res, _ := client.Do(req)
+
+						rbody, _ := ioutil.ReadAll(res.Body)
+						if (strings.Contains(string(rbody), "/content/dam/")) ||
+							(strings.Contains(string(rbody), "/libs/settings/")) ||
+							(strings.Contains(string(rbody), "/libs/granite/")) ||
+							(strings.Contains(string(rbody), "/etc/libs/")) {
 							pData.InScope = append(pData.InScope, ScopeElement{Target: currentTarget.line})
 						}
 
