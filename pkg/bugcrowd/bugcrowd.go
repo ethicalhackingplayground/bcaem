@@ -216,35 +216,6 @@ func GetProgramScope(handle string, categories string, token string) (pData Prog
 					}
 				}
 			}
-			//currentTarget.target = scopeElement.Map()["target"].Str
-
-			/**
-			for _, x := range scopeElement.Map()["target"].Map() {
-				for _, y := range x.Array() {
-					currentTarget.categories = append(currentTarget.categories, y.Map()["name"].Str)
-				}
-			}
-
-			if categories != "all" {
-				catMatches := false
-				for _, cat := range GetCategories(categories) {
-					for _, cCat := range currentTarget.categories {
-						if cat == cCat {
-							catMatches = true
-							break
-						}
-					}
-
-					if catMatches {
-						pData.InScope = append(pData.InScope, scope.ScopeElement{Target: currentTarget.line, Description: "", Category: strings.Join(currentTarget.categories, " ")})
-						break
-					}
-				}
-			} else {
-				pData.InScope = append(pData.InScope, scope.ScopeElement{Target: currentTarget.line, Description: "", Category: strings.Join(currentTarget.categories, " ")})
-			}
-			**/
-
 		}
 	})
 
